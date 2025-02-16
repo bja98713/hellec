@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Facture - {{ evenement.no_facture }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 10px;
+            padding: 10px;
+        }
+        h1 {
+            font-size: 16px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 14px;
+            text-align: center;
+        }
+        h3 {
+            font-size: 14px;
+            text-align: center;
+        }
+        table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto; /* Laisse le navigateur ajuster la largeur */
+}
+th, td {
+    padding: 4px;
+    border: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap; /* Empêche le texte de passer à la ligne */
+}
+
+        th {
+            background-color: #f2f2f2;
+        }
+        .barcode {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .barcode img {
+            width: 150px; /* Réduction de la taille */
+            height: 50px;
+        }
+        .footer {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 10px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .print-button {
+            font-size: 12px;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .print-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Centre d'Expertise Médicale du Personnel Naviguant</h1>
+    <h2>BP 295 - Papeete</h2>
+    <h2>Polynésie Française</h2>
+    <h2>Facture</h2>
+
+    <p><strong>Date :</strong> {{ evenement.date_evenement|date:"d/m/Y" }}</p>
+    <p><strong>Numéro de facture :</strong> {{ evenement.no_facture }}</p>
+
+    <!-- Code-barres -->
+    {% if barcode %}
+    <div class="barcode">
+        <img src="data:image/png;base64,{{ barcode }}" alt="Code-barres">
+    </div>
+    {% endif %}
+
+    <h2>Informations du patient</h2>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <td>{{ evenement.personnel.nom }}</td>
+        </tr>
+        <tr>
+            <th>Prénom</th>
+            <td>{{ evenement.personnel.prenom }}</td>
+        </tr>
+        <tr>
+            <th>DN</th>
+            <td>{{ evenement.personnel.dn }}</td>
+        </tr>
+        <tr>
+            <th>Date de naissance</th>
+            <td>{{ evenement.personnel.date_de_naissance|date:"d/m/Y" }}</td>
+        </tr>
+    </table>
+
+    <h2>Détails des actes réalisés</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date de l'acte</th>
+                <th>Consultation</th>
+                <th>Nom du médecin</th>
+                <th>Total par acte</th>
+                <th>Payé par le patient</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if evenement.cs_cempn %}
+            <tr>
+                <td>{{ evenement.date_cempn|date:"d/m/Y" }}</td>
+                <td>CEMPN/Pf</td>
+                <td>Dr. {{ evenement.medecin_cempn.nom }}</td>
+                <td>{{ evenement.honoraire_cempn }} €</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cempn }} €{% else %}-{% endif %}</td>
+            </tr>
+            {% endif %}
+            {% if evenement.cs_oph %}
+            <tr>
+                <td>{{ evenement.date_cs_oph|date:"d/m/Y" }}</td>
+                <td>Consultation Ophalmologie</td>
+                <td>Dr. {{ evenement.medecin_oph.nom }}</td>
+                <td>{{ evenement.honoraire_cs_oph }} €</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_oph }} €{% else %}-{% endif %}</td>
+            </tr>
+            {% endif %}
+            {% if evenement.cs_orl %}
+            <tr>
+                <td>{{ evenement.date_cs_orl|date:"d/m/Y" }}</td>
+                <td>Consultation ORL</td>
+                <td>Dr. {{ evenement.medecin_orl.nom }}</td>
+                <td>{{ evenement.honoraire_cs_orl }} €</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_orl }} €{% else %}-{% endif %}</td>
+            </tr>
+            {% endif %}
+            {% if evenement.cs_radio %}
+            <tr>
+                <td>{{ evenement.date_cs_radio|date:"d/m/Y" }}</td>
+                <td>Imagerie Radiologique</td>
+                <td>Dr. {{ evenement.medecin_radio.nom }}</td>
+                <td>{{ evenement.honoraire_cs_radio }} €</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_radio }} €{% else %}-{% endif %}</td>
+            </tr>
+            {% endif %}
+            {% if evenement.cs_labo %}
+            <tr>
+                <td>{{ evenement.date_cs_labo|date:"d/m/Y" }}</td>
+                <td>Laboratoire AM Javouhay (Biologie + Toxique)</td>
+                <td>-</td>
+                <td>{{ evenement.honoraire_cs_labo }} €</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_labo }} €{% else %}-{% endif %}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td>{{ evenement.date_evenement|date:"d/m/Y" }}</td>
+                <td>Recherche toxique</td>
+                <td>{% if evenement.recherche_toxique %}Oui{% else %}Non{% endif %}</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            {% if evenement.frais_dossier > 0 %}
+            <tr>
+                <td>{{ evenement.date_evenement|date:"d/m/Y" }}</td>
+                <td>Frais de dossier</td>
+                <td>-</td>
+                <td>{{ evenement.frais_dossier }} €</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.frais_dossier }} €{% else %}-{% endif %}</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <h2>Récapitulatif</h2>
+    <table>
+        <tr>
+            <th>Total</th>
+            <td>{{ evenement.total }} €</td>
+        </tr>
+        <tr>
+            <th>Payé par le patient</th>
+            <td>{{ evenement.paye_par_patient }} €</td>
+        </tr>
+    </table>
+
+    <div class="button-container">
+        <button class="print-button" onclick="window.print()">Imprimer</button>
+        <a href="{% url 'personnel_detail' evenement.personnel.dn %}">Retour</a>
+    </div>
+
+</body>
+</html>

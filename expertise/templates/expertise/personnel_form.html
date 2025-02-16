@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          background-color: #f8f8f8;
+          color: #333;
+        }
+        h1 {
+          color: #007bff;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+          background-color: #fff;
+        }
+        th, td {
+          padding: 10px;
+          border: 1px solid #ddd;
+          text-align: center;
+        }
+        th {
+          background-color: #007bff;
+          color: #fff;
+        }
+        tr:nth-child(even) {
+          background-color: #f2f2f2;
+        }
+        .action-links a {
+          margin: 0 5px;
+          color: #007bff;
+          text-decoration: none;
+        }
+        .action-links a:hover {
+          text-decoration: underline;
+        }
+        .search-form {
+          margin-bottom: 20px;
+        }
+        .search-form input[type="text"] {
+          padding: 8px;
+          width: 300px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+        .search-form button {
+          padding: 8px 12px;
+          border: none;
+          background-color: #007bff;
+          color: #fff;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .search-form button:hover {
+          background-color: #0056b3;
+        }
+      </style>
+<head>
+    <meta charset="UTF-8">
+    <title>{% if object %}Modifier{% else %}Ajouter{% endif %} un Personnel Navigant</title>
+</head>
+<body>
+    <h1>{% if object %}Modifier{% else %}Ajouter{% endif %} un Personnel Navigant</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enregistrer</button>
+    </form>
+    <a href="{% url 'personnel_list' %}">Annuler</a>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Fiche du Personnel Navigant</title>
+</head>
+<body>
+    <h1>Fiche du Personnel Navigant</h1>
+    <h2>{{ personnel.prenom }} {{ personnel.nom }}</h2>
+    <p><strong>DN :</strong> {{ personnel.dn }}</p>
+    <p><strong>Date de naissance :</strong> {{ personnel.date_de_naissance|date:"d/m/Y" }}</p>
+    <p><strong>Sexe :</strong> {{ personnel.get_sexe_display }}</p>
+    <p><strong>Compagnie aérienne :</strong> {{ personnel.compagnie.nom }}</p>
+
+    <h3>Liste des événements</h3>
+    {% if evenements %}
+        <ul>
+            {% for evenement in evenements %}
+                <li>
+                    Date de l'événement : {{ evenement.date_evenement|date:"d/m/Y" }} -
+                    <a href="{% url 'fiche_evenement' evenement.id %}">Voir le détail</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun événement enregistré.</p>
+    {% endif %}
+</body>
+</html>

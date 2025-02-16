@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste des Personnels Navigants</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f8f8f8;
+      color: #333;
+    }
+    /* Style pour l'en-tête principal */
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      color: #007bff;
+      font-size: 2em;
+      margin: 0;
+    }
+    .header h2 {
+      color: #007bff;
+      font-size: 1.2em;
+      margin: 5px 0 0 0;
+      font-weight: normal;
+    }
+    /* Sous-titre pour la liste */
+    h3 {
+      color: #333;
+      text-align: center;
+      margin-top: 20px;
+    }
+    /* Styles pour le formulaire de recherche */
+    .search-form {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .search-form input[type="text"] {
+      padding: 8px;
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-form button {
+      padding: 8px 12px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .search-form button:hover {
+      background-color: #0056b3;
+    }
+    /* Styles pour le tableau */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: #007bff;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .action-links a {
+      margin: 0 5px;
+      color: #007bff;
+      text-decoration: none;
+    }
+    .action-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- En-tête principal -->
+  <div class="header">
+    <h1>Centre d'Expertise Médicale du Personnel Naviguant</h1>
+    <h2>BP 295 - Papeete</h2>
+    <h2>Polynésie Française</h2>
+  </div>
+  
+  <h3>Liste des Personnels Navigants</h3>
+  
+  <!-- Formulaire de recherche -->
+  <form method="get" class="search-form">
+    <input type="text" name="q" placeholder="Rechercher par nom, prénom ou DN" value="{{ request.GET.q }}">
+    <button type="submit">Rechercher</button>
+  </form>
+  
+  <!-- Tableau de la liste des personnels -->
+  <table>
+    <thead>
+      <tr>
+        <th>DN</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Date de naissance</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for personnel in personnels %}
+        <tr>
+          <td>{{ personnel.dn }}</td>
+          <td>{{ personnel.nom }}</td>
+          <td>{{ personnel.prenom }}</td>
+          <td>{{ personnel.date_de_naissance|date:"d/m/Y" }}</td>
+          <td class="action-links">
+            <a href="{% url 'personnel_detail' personnel.dn %}">Détail</a>
+            <a href="{% url 'personnel_edit' personnel.dn %}">Modifier</a>
+            <a href="{% url 'personnel_delete' personnel.dn %}">Supprimer</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">Aucun personnel trouvé.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <p style="text-align: center;">
+    <a href="{% url 'personnel_add' %}">Ajouter un nouveau personnel</a>
+  </p>
+  <p style="text-align: center;">
+    <a href="{% url 'selectionner_bordereau' %}">Créer un bordereau</a>
+  </p>
+  <p style="text-align: center;">
+    <a href="{% url 'admin:index' %}">Accéder à l'administration du site</a>
+  </p>
+
+</body>
+</html>

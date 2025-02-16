@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Supprimer Personnel</title>
+</head>
+<body>
+    <h1>Supprimer Personnel</h1>
+    <p>Êtes-vous sûr de vouloir supprimer {{ object.prenom }} {{ object.nom }} ?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirmer</button>
+    </form>
+    <a href="{% url 'personnel_detail' object.dn %}">Annuler</a>
+</body>
+</html>

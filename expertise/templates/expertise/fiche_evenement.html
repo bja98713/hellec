@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Fiche Événement</title>
+    <style>
+      table {
+         width: 100%;
+         border-collapse: collapse;
+         margin-bottom: 20px;
+      }
+      table, th, td {
+         border: 1px solid #ccc;
+      }
+      th, td {
+         padding: 8px;
+         text-align: left;
+      }
+      th {
+         background-color: #f2f2f2;
+      }
+    </style>
+</head>
+<body>
+    <h1>Détail de l'Événement</h1>
+
+    <!-- Tableau pour les informations générales de l'événement -->
+    <table>
+        <tr>
+            <th>Champ</th>
+            <th>Valeur</th>
+        </tr>
+        <tr>
+            <td>Date de l'événement</td>
+            <td>{{ evenement.date_evenement|date:"d/m/Y" }}</td>
+        </tr>
+    </table>
+
+    <!-- Tableau pour les informations du patient -->
+    <h2>Informations du Patient</h2>
+    <table>
+        <tr>
+            <th>Champ</th>
+            <th>Valeur</th>
+        </tr>
+        <tr>
+            <td>DN</td>
+            <td>{{ evenement.personnel.dn }}</td>
+        </tr>
+        <tr>
+            <td>Nom</td>
+            <td>{{ evenement.personnel.nom }}</td>
+        </tr>
+        <tr>
+            <td>Prénom</td>
+            <td>{{ evenement.personnel.prenom }}</td>
+        </tr>
+        <tr>
+            <td>Sexe</td>
+            <td>{{ evenement.personnel.get_sexe_display }}</td>
+        </tr>
+    </table>
+
+    <!-- Tableau pour les détails des consultations et honoraires -->
+    <h2>Détails des Consultations et Honoraires</h2>
+    <table>
+        <tr>
+            <th>Type de consultation</th>
+            <th>Date</th>
+            <th>Honoraire</th>
+        </tr>
+        <tr>
+            <td>CS CEMPn</td>
+            <td>
+                {% if evenement.cs_cempn %}
+                    {{ evenement.date_cempn|date:"d/m/Y" }}
+                {% else %}
+                    Non
+                {% endif %}
+            </td>
+            <td>
+                {% if evenement.cs_cempn %}
+                    {{ evenement.honoraire_cempn }} €
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>CS OPH</td>
+            <td>
+                {% if evenement.cs_oph %}
+                    {{ evenement.date_cs_oph|date:"d/m/Y" }}
+                {% else %}
+                    Non
+                {% endif %}
+            </td>
+            <td>
+                {% if evenement.cs_oph %}
+                    {{ evenement.honoraire_cs_oph }} €
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>CS ORL</td>
+            <td>
+                {% if evenement.cs_orl %}
+                    {{ evenement.date_cs_orl|date:"d/m/Y" }}
+                {% else %}
+                    Non
+                {% endif %}
+            </td>
+            <td>
+                {% if evenement.cs_orl %}
+                    {{ evenement.honoraire_cs_orl }} €
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>CS LABO</td>
+            <td>
+                {% if evenement.cs_labo %}
+                    {{ evenement.date_cs_labo|date:"d/m/Y" }}
+                {% else %}
+                    Non
+                {% endif %}
+            </td>
+            <td>
+                {% if evenement.cs_labo %}
+                    {{ evenement.honoraire_cs_labo }} €
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>CS LBX</td>
+            <td>
+                {% if evenement.cs_lbx %}
+                    {{ evenement.date_cs_lbx|date:"d/m/Y" }}
+                {% else %}
+                    Non
+                {% endif %}
+            </td>
+            <td>
+                {% if evenement.cs_lbx %}
+                    {{ evenement.honoraire_cs_lbx }} €
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>CS RADIO</td>
+            <td>
+                {% if evenement.cs_radio %}
+                    {{ evenement.date_cs_radio|date:"d/m/Y" }}
+                {% else %}
+                    Non
+                {% endif %}
+            </td>
+            <td>
+                {% if evenement.cs_radio %}
+                    {{ evenement.honoraire_cs_radio }} €
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+    <!-- Tableau pour les informations complémentaires -->
+    <h2>Informations Complémentaires</h2>
+    <table>
+        <tr>
+            <th>Champ</th>
+            <th>Valeur</th>
+        </tr>
+        <tr>
+            <td>Recherche toxique</td>
+            <td>{{ evenement.recherche_toxique|yesno:"Oui,Non" }}</td>
+        </tr>
+        <tr>
+            <td>Frais de dossier</td>
+            <td>{{ evenement.frais_dossier }} €</td>
+        </tr>
+        <tr>
+            <td>Total</td>
+            <td>{{ evenement.total }} €</td>
+        </tr>
+    </table>
+
+    <!-- Tableau pour les informations de paiement -->
+    <h2>Paiement</h2>
+    <table>
+        <tr>
+            <th>Champ</th>
+            <th>Valeur</th>
+        </tr>
+        <tr>
+            <td>Paiement effectué</td>
+            <td>{{ evenement.paiement|yesno:"Oui,Non" }}</td>
+        </tr>
+        {% if evenement.paiement %}
+        <tr>
+            <td>Date de paiement</td>
+            <td>{{ evenement.date_paiement|date:"d/m/Y" }}</td>
+        </tr>
+        <tr>
+            <td>Modalité de paiement</td>
+            <td>{{ evenement.get_modalite_paiement_display }}</td>
+        </tr>
+        {% endif %}
+    </table>
+
+    <p><a href="{% url 'fiche_personnel' evenement.personnel.dn %}">Retour à la fiche du PN</a></p>
+</body>
+</html>

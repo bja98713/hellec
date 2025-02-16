@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+</head>
+<body>
+    <h1>Bienvenue sur l'application de gestion des personnels navigants</h1>
+    <h2>Liste des personnels navigants</h2>
+    <ul>
+        {% for personnel in personnels %}
+            <li>
+                {{ personnel.prenom }} {{ personnel.nom }} -
+                <a href="{% url 'personnel_detail' personnel.dn %}">Voir la fiche</a>
+            </li>
+        {% empty %}
+            <li>Aucun personnel enregistré.</li>
+        {% endfor %}
+    </ul>
+
+    <p>
+    <a href="{% url 'personnel_add' %}">Ajouter un nouveau personnel</a>
+    </p>
+
+</body>
+</html>
