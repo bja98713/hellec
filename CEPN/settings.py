@@ -1,17 +1,13 @@
 import os
 from pathlib import Path
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# Chemin de base
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'votre-cle-secrete-a-changer'
-
+SECRET_KEY = 'django-insecure-<your-secret-key>'
 DEBUG = True
-
 ALLOWED_HOSTS = []
+
+# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,7 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'expertise',  # Notre application
+    'expertise',
 ]
 
 MIDDLEWARE = [
@@ -38,7 +34,7 @@ ROOT_URLCONF = 'CEPN.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # Les templates sont recherchés dans les dossiers "templates" des apps
+        'DIRS': [str(BASE_DIR / "templates")],  # ✅ Correction ici
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -53,17 +49,45 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'CEPN.wsgi.application'
 
+# Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / "db.sqlite3"),  # ✅ Correction ici
     }
 }
 
+# Password validation
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+# Internationalization
 LANGUAGE_CODE = 'fr-fr'
-TIME_ZONE = 'Europe/Paris'
+TIME_ZONE = 'Pacific/Tahiti'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+STATIC_ROOT = str(BASE_DIR / 'staticfiles')  # ✅ Correction ici
+STATICFILES_DIRS = [str(BASE_DIR / "static")]  # ✅ Optionnel si tu as un répertoire 'static'
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = str(BASE_DIR / 'media')
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

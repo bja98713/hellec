@@ -154,19 +154,30 @@ th, td {
             {% if evenement.cs_labo %}
             <tr>
                 <td>{{ evenement.date_cs_labo|date:"d/m/Y" }}</td>
-                <td>Laboratoire AM Javouhay (Biologie + Toxique)</td>
-                <td>-</td>
+                <td>Laboratoire AM Javouhay (Biologie)</td>
+                <td>Dr. {{ evenement.medecin_labo.nom }}</td>
                 <td>{{ evenement.honoraire_cs_labo }} €</td>
                 <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_labo }} €{% else %}-{% endif %}</td>
             </tr>
             {% endif %}
+            {% if evenement.cs_labo %}
             <tr>
-                <td>{{ evenement.date_evenement|date:"d/m/Y" }}</td>
-                <td>Recherche toxique</td>
-                <td>{% if evenement.recherche_toxique %}Oui{% else %}Non{% endif %}</td>
-                <td>-</td>
-                <td>-</td>
+                <td>{{ evenement.date_cs_lbx|date:"d/m/Y" }}</td>
+                <td>Laboratoire AM Javouhay (Labstix)</td>
+                <td>Dr. {{ evenement.medecin_labo.nom }}</td>
+                <td>{{ evenement.honoraire_cs_lbx }} €</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_lbx }} €{% else %}-{% endif %}</td>
             </tr>
+            {% endif %}
+            {% if evenement.cs_toxique %}
+            <tr>
+                <td>{{ evenement.date_cs_toxique|date:"d/m/Y" }}</td>
+                <td>Laboratoire AM Javouhay | Recherche toxique : {% if evenement.cs_toxique %}Oui{% else %}Non{% endif %}</td>
+                <td>Dr. {{ evenement.medecin_labo.nom }}</td>
+                <td>{{ evenement.honoraire_cs_toxique }} €</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_toxique }} €{% else %}-{% endif %}</td>
+            </tr>
+            {% endif %}
             {% if evenement.frais_dossier > 0 %}
             <tr>
                 <td>{{ evenement.date_evenement|date:"d/m/Y" }}</td>

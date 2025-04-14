@@ -1,0 +1,24 @@
+<h2>Factures du Bordereau {{ no_bordereau }}</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Numéro de facture</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Total</th>
+            <th>Paiement</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in evenements %}
+        <tr>
+            <td>{{ e.no_facture }}</td>
+            <td>{{ e.personnel.nom }}</td>
+            <td>{{ e.personnel.prenom }}</td>
+            <td>{{ e.total }} XPF</td>
+            <td>{{ e.paiement|yesno:"Payé,Non payé" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

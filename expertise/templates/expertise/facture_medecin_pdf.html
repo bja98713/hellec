@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Facture médecin</title>
+    <style>
+        body {
+            font-family: "Helvetica", "Arial", sans-serif;
+            font-size: 12px;
+            padding: 30px;
+            background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?fit=crop&w=1000') no-repeat;
+            background-size: cover;
+            background-position: center;
+            color: #000;
+        }
+
+        .wrapper {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px 30px;
+            border-radius: 10px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 20px;
+            color: #1f4e5f;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            font-size: 16px;
+            color: #1f4e5f;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin: 6px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #e0f7fa;
+            font-weight: bold;
+            border: 1px solid #90a4ae;
+            padding: 8px;
+            text-align: center;
+            color: #000;
+        }
+
+        td {
+            border: 1px solid #b0bec5;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .total {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .iban {
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <h1>Centre d'Expertises Médicales du Personnel Naviguant</h1>
+    <h2>Facture pour le Dr {{ medecin.nom }} {{ medecin.prenom }}</h2>
+
+    <p><strong>Bordereau :</strong> {{ bordereau.no_bordereau }}</p>
+    <p><strong>Date :</strong> {{ bordereau.date_bordereau|date:"d/m/Y" }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Patient</th>
+                <th>Montant brut</th>
+                <th>Redevance</th>
+                <th>Montant net</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in evenements %}
+            <tr>
+                <td>{{ e.date }}</td>
+                <td>{{ e.patient }}</td>
+                <td>{{ e.montant }} XPF</td>
+                <td>{{ e.redevance }} XPF</td>
+                <td>{{ e.net }} XPF</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p class="total">💰 <strong>Total brut :</strong> {{ total_brut }} XPF</p>
+    <p class="total">🧾 <strong>Total redevance :</strong> {{ total_redevance }} XPF</p>
+    <p class="total">✅ <strong>Total net à payer :</strong> {{ total_net }} XPF</p>
+
+    {% if medecin.iban %}
+    <p class="iban"><strong>IBAN / RIB :</strong> {{ medecin.iban }}</p>
+    {% endif %}
+
+    <div class="footer">
+        <p>Facture générée automatiquement — CEPN Tahiti</p>
+    </div>
+</div>
+</body>
+</html>

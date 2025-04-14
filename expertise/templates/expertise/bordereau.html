@@ -85,17 +85,16 @@
 </head>
 <body>
 
-    <div style="text-align: center;">
-        <h2>Centre d'Expertise Médicale du Personnel Navigant</h2>
-        <h3>BP 285 - 98713 Papeete</h3>
-        <h3>Tel : 87.71.50.90 | Mel : cmpnpf@gmail.com</h3>
-        <p>---------------------</p>
-        <h2>Bordereau de dépôts de factures</h2>
-        <p><strong>Date du bordereau :</strong> {{ date_bordereau }}</p>
-        <p><strong>Numéro de bordereau :</strong> {{ no_bordereau }}</p>
-    </div>
-    
-
+  <div style="text-align: center;">
+    <h2>Centre Médical du Personnel Navigant de Polynésie française</h2>
+    <h2>Dr. Christian Hellec</h2>
+    <h3>BP 1946 - 98713 Papeete</h3>
+    <h3>Tel : 87.71.50.90 | Mel : cmpnpf@gmail.com</h3>
+    <p>---------------------</p>
+    <h2>Bordereau de dépôts de factures</h2>
+    <p><strong>Date du bordereau :</strong> {{ date_bordereau }}</p>
+    <p><strong>Numéro de bordereau :</strong> {{ no_bordereau }}</p>
+</div>
   <h2>Compagnie : {{ compagnie.nom }} 
     {% if compagnie.iata %} ({{ compagnie.iata }}){% endif %}
   </h2>
@@ -110,6 +109,7 @@
             <th>Prénom</th>
             <th>Total (XPF)</th>
             <th>Paiement</th>
+            <th>Numéro de Bordereau</th>
         </tr>
     </thead>
     <tbody>
@@ -122,6 +122,7 @@
                 <td>{{ evenement.personnel.prenom }}</td>
                 <td>{{ evenement.total }} XPF</td>
                 <td>{% if evenement.paiement %}Payé{% else %}Non payé{% endif %}</td>
+                <td>{{ evenement.bordereau.no_bordereau }}</td>
             </tr>
             {% endfor %}
         {% else %}

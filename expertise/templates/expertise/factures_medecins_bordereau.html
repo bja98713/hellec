@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Factures des Médecins</title>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f8f8f8;
+      color: #333;
+    }
+    /* Style pour l'en-tête principal */
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      color: #007bff;
+      font-size: 2em;
+      margin: 0;
+    }
+    .header h2 {
+      color: #007bff;
+      font-size: 1.2em;
+      margin: 5px 0 0 0;
+      font-weight: normal;
+    }
+    /* Sous-titre pour la liste */
+    h3 {
+      color: #333;
+      text-align: center;
+      margin-top: 20px;
+    }
+    /* Styles pour le formulaire de recherche */
+    .search-form {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .search-form input[type="text"] {
+      padding: 8px;
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-form button {
+      padding: 8px 12px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .search-form button:hover {
+      background-color: #0056b3;
+    }
+    /* Styles pour le tableau */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: #007bff;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .action-links a {
+      margin: 0 5px;
+      color: #007bff;
+      text-decoration: none;
+    }
+    .action-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  </head>
+  <body>
+<h2>Factures des médecins pour le bordereau {{ bordereau.no_bordereau }}</h2>
+
+<table border="1" cellspacing="0" cellpadding="4">
+    <tr>
+        <th>Médecin</th>
+        <th>Spécialité</th>
+        <th>Montant</th>
+        <th>Redevance (6%)</th>
+        <th>Montant net</th>
+        <th>Date de création</th>
+        <th>Téléchargement</th>
+    </tr>
+    {% for facture in factures %}
+    <tr>
+        <td>{{ facture.medecin.nom }} {{ facture.medecin.prenom }}</td>
+        <td>{{ facture.medecin.specialite }}</td>
+        <td>{{ facture.montant }} XPF</td>
+        <td>{{ facture.redevance }} XPF</td>
+        <td>{{ facture.montant_net }} XPF</td>
+        <td>{{ facture.date_creation }}</td>
+        <td>
+            <a href="{% url 'telecharger_facture_medecin' bordereau.no_bordereau facture.medecin.id %}" target="_blank">
+                Télécharger
+            </a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">Aucune facture de médecin enregistrée.</td></tr>
+    {% endfor %}
+</table>
+
+<p><a href="{% url 'liste_bordereaux' %}">← Retour à la liste des bordereaux</a></p>
+</body>
+</html>

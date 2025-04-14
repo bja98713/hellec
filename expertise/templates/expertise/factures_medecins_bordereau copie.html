@@ -1,0 +1,25 @@
+
+{% block content %}
+<h2>Factures des médecins pour le bordereau {{ bordereau.no_bordereau }}</h2>
+
+<table border="1" cellspacing="0" cellpadding="4">
+    <tr>
+        <th>Médecin</th>
+        <th>Spécialité</th>
+        <th>Montant</th>
+        <th>Date de création</th>
+    </tr>
+    {% for facture in factures %}
+    <tr>
+        <td>{{ facture.medecin.nom }} {{ facture.medecin.prenom }}</td>
+        <td>{{ facture.medecin.specialite }}</td>
+        <td>{{ facture.montant }} XPF</td>
+        <td>{{ facture.date_creation }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">Aucune facture de médecin enregistrée.</td></tr>
+    {% endfor %}
+</table>
+
+<p><a href="{% url 'liste_bordereaux' %}">← Retour à la liste des bordereaux</a></p>
+{% endblock %}
