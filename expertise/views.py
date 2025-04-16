@@ -22,8 +22,24 @@ from .forms import BordereauSelectionForm
 from django.db import models
 from django.template.loader import render_to_string
 from weasyprint import HTML
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='/login/')
+def accueil(request):
+    return render(request, 'expertise/accueil.html')
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def logout_view(request):
+    logout(request)
+    return redirect('/login/')
 
 def assign_bordereau(request, mois, annee, iata):
     compagnie = get_object_or_404(CompagnieAerienne, iata=iata)
@@ -48,7 +64,8 @@ def assign_bordereau(request, mois, annee, iata):
     return redirect('bordereau_view', mois=mois, annee=annee, iata=iata)
 
 # ----- VUES POUR LES PERSONNELS -----
-class PersonnelListView(ListView):
+# Pour une classe
+class PersonnelListView(LoginRequiredMixin, ListView):
     model = PersonnelNavigant
     template_name = 'expertise/personnel_list.html'
     context_object_name = 'personnels'
@@ -807,3 +824,9 @@ def telecharger_facture_medecin(request, bordereau_no, medecin_id):
     response = HttpResponse(pdf_file, content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="Facture_{medecin.nom}_{bordereau.no_bordereau}.pdf"'
     return response
+
+class CustomLoginView(LoginView):
+    template_name = 'login.html'
+
+class CustomLogoutView(LogoutView):
+    next_page = '/login/'

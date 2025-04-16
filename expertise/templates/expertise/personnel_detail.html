@@ -73,9 +73,9 @@
             <tr>
               <td>{{ event.date_evenement|date:"d/m/Y" }}</td>
               <td>{{ event.no_facture }}</td>
-              <td>{{ event.total }} €</td>
+              <td>{{ event.total }} xpf</td>
               <td>{{ event.quote_part_patient|yesno:"Oui,Non" }}</td>
-              <td>{{ event.paye_par_patient }} €</td>
+              <td>{{ event.paye_par_patient }} xpf</td>
               <td>{% if event.paiement %}Payé{% else %}Non payé{% endif %}</td>
               <td>{{ event.get_modalite_paiement_display }}</td>
               <td>

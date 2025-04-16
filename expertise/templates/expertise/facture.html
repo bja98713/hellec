@@ -69,7 +69,7 @@ th, td {
 </head>
 <body>
     <h1>Centre d'Expertise Médicale du Personnel Naviguant</h1>
-    <h2>BP 295 - Papeete</h2>
+    <h2>BP 1946 - 98713 - Papeete</h2>
     <h2>Polynésie Française</h2>
     <h2>Facture</h2>
 
@@ -120,8 +120,8 @@ th, td {
                 <td>{{ evenement.date_cempn|date:"d/m/Y" }}</td>
                 <td>CEMPN/Pf</td>
                 <td>Dr. {{ evenement.medecin_cempn.nom }}</td>
-                <td>{{ evenement.honoraire_cempn }} €</td>
-                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cempn }} €{% else %}-{% endif %}</td>
+                <td>{{ evenement.honoraire_cempn }} xpf</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cempn }} xpf{% else %}-{% endif %}</td>
             </tr>
             {% endif %}
             {% if evenement.cs_oph %}
@@ -129,8 +129,8 @@ th, td {
                 <td>{{ evenement.date_cs_oph|date:"d/m/Y" }}</td>
                 <td>Consultation Ophalmologie</td>
                 <td>Dr. {{ evenement.medecin_oph.nom }}</td>
-                <td>{{ evenement.honoraire_cs_oph }} €</td>
-                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_oph }} €{% else %}-{% endif %}</td>
+                <td>{{ evenement.honoraire_cs_oph }} xpf</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_oph }} xpf{% else %}-{% endif %}</td>
             </tr>
             {% endif %}
             {% if evenement.cs_orl %}
@@ -138,8 +138,8 @@ th, td {
                 <td>{{ evenement.date_cs_orl|date:"d/m/Y" }}</td>
                 <td>Consultation ORL</td>
                 <td>Dr. {{ evenement.medecin_orl.nom }}</td>
-                <td>{{ evenement.honoraire_cs_orl }} €</td>
-                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_orl }} €{% else %}-{% endif %}</td>
+                <td>{{ evenement.honoraire_cs_orl }} xpf</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_orl }} xpf{% else %}-{% endif %}</td>
             </tr>
             {% endif %}
             {% if evenement.cs_radio %}
@@ -147,8 +147,8 @@ th, td {
                 <td>{{ evenement.date_cs_radio|date:"d/m/Y" }}</td>
                 <td>Imagerie Radiologique</td>
                 <td>Dr. {{ evenement.medecin_radio.nom }}</td>
-                <td>{{ evenement.honoraire_cs_radio }} €</td>
-                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_radio }} €{% else %}-{% endif %}</td>
+                <td>{{ evenement.honoraire_cs_radio }} xpf</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_radio }} xpf{% else %}-{% endif %}</td>
             </tr>
             {% endif %}
             {% if evenement.cs_labo %}
@@ -156,8 +156,8 @@ th, td {
                 <td>{{ evenement.date_cs_labo|date:"d/m/Y" }}</td>
                 <td>Laboratoire AM Javouhay (Biologie)</td>
                 <td>Dr. {{ evenement.medecin_labo.nom }}</td>
-                <td>{{ evenement.honoraire_cs_labo }} €</td>
-                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_labo }} €{% else %}-{% endif %}</td>
+                <td>{{ evenement.honoraire_cs_labo }} xpf</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_labo }} xpf{% else %}-{% endif %}</td>
             </tr>
             {% endif %}
             {% if evenement.cs_labo %}
@@ -165,8 +165,8 @@ th, td {
                 <td>{{ evenement.date_cs_lbx|date:"d/m/Y" }}</td>
                 <td>Laboratoire AM Javouhay (Labstix)</td>
                 <td>Dr. {{ evenement.medecin_labo.nom }}</td>
-                <td>{{ evenement.honoraire_cs_lbx }} €</td>
-                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_lbx }} €{% else %}-{% endif %}</td>
+                <td>{{ evenement.honoraire_cs_lbx }} xpf</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_lbx }} xpf{% else %}-{% endif %}</td>
             </tr>
             {% endif %}
             {% if evenement.cs_toxique %}
@@ -174,8 +174,8 @@ th, td {
                 <td>{{ evenement.date_cs_toxique|date:"d/m/Y" }}</td>
                 <td>Laboratoire AM Javouhay | Recherche toxique : {% if evenement.cs_toxique %}Oui{% else %}Non{% endif %}</td>
                 <td>Dr. {{ evenement.medecin_labo.nom }}</td>
-                <td>{{ evenement.honoraire_cs_toxique }} €</td>
-                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_toxique }} €{% else %}-{% endif %}</td>
+                <td>{{ evenement.honoraire_cs_toxique }} xpf</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_toxique }} xpf{% else %}-{% endif %}</td>
             </tr>
             {% endif %}
             {% if evenement.frais_dossier > 0 %}
@@ -183,8 +183,8 @@ th, td {
                 <td>{{ evenement.date_evenement|date:"d/m/Y" }}</td>
                 <td>Frais de dossier</td>
                 <td>-</td>
-                <td>{{ evenement.frais_dossier }} €</td>
-                <td>{% if evenement.quote_part_patient %}{{ evenement.frais_dossier }} €{% else %}-{% endif %}</td>
+                <td>{{ evenement.frais_dossier }} xpf</td>
+                <td>{% if evenement.quote_part_patient %}{{ evenement.frais_dossier }} xpf{% else %}-{% endif %}</td>
             </tr>
             {% endif %}
         </tbody>
@@ -194,11 +194,11 @@ th, td {
     <table>
         <tr>
             <th>Total</th>
-            <td>{{ evenement.total }} €</td>
+            <td>{{ evenement.total }} xpf</td>
         </tr>
         <tr>
             <th>Payé par le patient</th>
-            <td>{{ evenement.paye_par_patient }} €</td>
+            <td>{{ evenement.paye_par_patient }} xpf</td>
         </tr>
     </table>
 

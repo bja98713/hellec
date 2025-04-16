@@ -1,7 +1,10 @@
 # expertise/urls.py
 
+from django.contrib import admin
 from django.urls import path
-from . import views  # Ensure that views are imported
+from django.contrib.auth.views import LoginView, LogoutView
+from . import views  # pour accéder à views.accueil
+
 from .views import (
     PersonnelListView,
     PersonnelDetailView,
@@ -19,6 +22,10 @@ from .views import (
 )
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('', views.accueil, name='accueil'),  # ta vue d'accueil protégée
     path('personnels/', PersonnelListView.as_view(), name='personnel_list'),
     path('personnels/add/', PersonnelCreateView.as_view(), name='personnel_add'),
     path('personnels/<str:dn>/', PersonnelDetailView.as_view(), name='personnel_detail'),
