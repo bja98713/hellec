@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from django.utils import timezone
 from datetime import datetime
 
@@ -22,7 +23,17 @@ class CompagnieAerienne(models.Model):
 
 # --- Personnels navigants ---
 class PersonnelNavigant(models.Model):
-    dn = models.CharField(max_length=8, unique=True)
+    dn = models.CharField(
+        max_length=7,
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\d{7}$',
+                message="Attention Christian, le dn doit contenir exactement 7 chiffres, et aucun autre symbole, ou lettre.",
+                code='invalid_dn'
+            )
+        ]
+    )
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     compagnie = models.ForeignKey(CompagnieAerienne, on_delete=models.CASCADE, related_name='personnels')

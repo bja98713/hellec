@@ -160,7 +160,7 @@ th, td {
                 <td>{% if evenement.quote_part_patient %}{{ evenement.honoraire_cs_labo }} xpf{% else %}-{% endif %}</td>
             </tr>
             {% endif %}
-            {% if evenement.cs_labo %}
+            {% if evenement.cs_lbx %}
             <tr>
                 <td>{{ evenement.date_cs_lbx|date:"d/m/Y" }}</td>
                 <td>Laboratoire AM Javouhay (Labstix)</td>
