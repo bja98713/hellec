@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from django.utils import timezone
 from datetime import datetime
 
@@ -22,7 +23,17 @@ class CompagnieAerienne(models.Model):
 
 # --- Personnels navigants ---
 class PersonnelNavigant(models.Model):
-    dn = models.CharField(max_length=8, unique=True)
+    dn = models.CharField(
+        max_length=7,
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\d{7}$',
+                message="Attention Christian, le dn doit contenir exactement 7 chiffres, et aucun autre symbole, ou lettre.",
+                code='invalid_dn'
+            )
+        ]
+    )
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     compagnie = models.ForeignKey(CompagnieAerienne, on_delete=models.CASCADE, related_name='personnels')
@@ -65,14 +76,14 @@ class FicheEvenement(models.Model):
     )
 
     # Honoraires
-    honoraire_cempn = models.IntegerField("CEMPN", default=0)
-    honoraire_cs_oph = models.IntegerField("OPH", default=0)
-    honoraire_cs_orl = models.IntegerField("ORL", default=0)
-    honoraire_cs_labo = models.IntegerField("Labo AMJ", default=0)
-    honoraire_cs_lbx = models.IntegerField("Labstix", default=0)
-    honoraire_cs_radio = models.IntegerField("Radio", default=0)
-    honoraire_cs_toxique = models.IntegerField("Toxique", default=0)
-    frais_dossier = models.IntegerField("Frais de dossier", default=0)
+    honoraire_cempn = models.IntegerField("CEMPN = 10000", default=0)
+    honoraire_cs_oph = models.IntegerField("OPH = 10600", default=0)
+    honoraire_cs_orl = models.IntegerField("ORL = 13250", default=0)
+    honoraire_cs_labo = models.IntegerField("Labo AMJ = 5529", default=0)
+    honoraire_cs_lbx = models.IntegerField("Labstix = 2337", default=0)
+    honoraire_cs_radio = models.IntegerField("Radio = 8400", default=0)
+    honoraire_cs_toxique = models.IntegerField("Toxique = 16644", default=0)
+    frais_dossier = models.IntegerField("Frais de dossier = 3000", default=0)
 
     # Consultations
     cs_cempn = models.BooleanField(default=False)

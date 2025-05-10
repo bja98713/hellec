@@ -27,7 +27,7 @@ LOGOUT_REDIRECT_URL = '/acceuil/'
 
 SECRET_KEY = 'django-insecure-<your-secret-key>'
 DEBUG = True
-ALLOWED_HOSTS = ['hellec-fc3c68ee076b.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['www.cmpnpf.com']
 
 # Application definition
 

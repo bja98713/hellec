@@ -41,6 +41,7 @@ def logout_view(request):
     logout(request)
     return redirect('/login/')
 
+@login_required(login_url='/login/')
 def assign_bordereau(request, mois, annee, iata):
     compagnie = get_object_or_404(CompagnieAerienne, iata=iata)
     evenements = FicheEvenement.objects.filter(
@@ -82,7 +83,7 @@ class PersonnelListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class PersonnelDetailView(DetailView):
+class PersonnelDetailView(LoginRequiredMixin, DetailView):
     model = PersonnelNavigant
     template_name = 'expertise/personnel_detail.html'
     context_object_name = 'personnel'
@@ -98,7 +99,7 @@ class PersonnelDetailView(DetailView):
 # ----- VUES POUR LES EVENEMENTS -----
 from django.utils.timezone import now
 
-class FicheEvenementCreateView(CreateView):
+class FicheEvenementCreateView(LoginRequiredMixin, CreateView):
     model = FicheEvenement
     fields = [
         'date_evenement',
@@ -145,7 +146,7 @@ class FicheEvenementCreateView(CreateView):
 
 
 
-class FactureView(DetailView):
+class FactureView(LoginRequiredMixin, DetailView):
     model = FicheEvenement
     template_name = 'expertise/facture.html'
     context_object_name = 'evenement'
@@ -204,7 +205,7 @@ from num2words import num2words
 
 from .models import CompagnieAerienne, FicheEvenement, Bordereau
 
-
+@login_required(login_url='/login/')
 def download_bordereau(request, mois, annee, iata):
     compagnie = get_object_or_404(CompagnieAerienne, iata=iata)
     evenements = FicheEvenement.objects.filter(
@@ -225,13 +226,16 @@ def download_bordereau(request, mois, annee, iata):
         evenements.update(bordereau=bordereau)
 
     doc = Document()
+
     para = doc.add_heading('Centre Médical du Personnel Naviguant de Polynésie française', level=1)
     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     para = doc.add_heading('Dr. Christian Hellec', level=1)
     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-    para = doc.add_heading('BP 1946 - Papeete - Tahiti', level=2)
+    para = doc.add_heading('BP 380697 - 98718 Punaauia - Tahiti', level=2)
     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     para = doc.add_heading('Polynésie Française', level=2)
+    para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    para = doc.add_heading('mel : cmpnpf@gmail.com | Tel : +689.87.77.05.18 | Tel : +689.87.71.50.90', level=2)
     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     para = doc.add_heading('Bordereau de dépôt de factures', level=2)
     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
@@ -284,9 +288,11 @@ def download_bordereau(request, mois, annee, iata):
         para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
         para = doc.add_heading('Dr. Christian Hellec', level=1)
         para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-        para = doc.add_heading('BP 1946 - Papeete - Tahiti', level=2)
+        para = doc.add_heading('BP 380697 - 98718 Punaauia - Tahiti', level=2)
         para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
         para = doc.add_heading('Polynésie Française', level=2)
+        para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+        para = doc.add_heading('mel : cmpnpf@gmail.com | Tel : +689.87.77.05.18 | Tel : +689.87.71.50.90', level=2)
         para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
         para = doc.add_heading('Facture Individuelle', level=2)
         para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
@@ -361,9 +367,10 @@ from .models import Bordereau
 from django.db.models import Sum
 from .models import Bordereau
 
+@login_required(login_url='/login/')
 def liste_bordereaux(request):
     bordereaux = Bordereau.objects.all().prefetch_related('evenements')
-    
+
     for bordereau in bordereaux:
         bordereau.total_general = (
             bordereau.evenements.aggregate(Sum('total'))['total__sum'] or 0
@@ -417,7 +424,7 @@ from barcode.writer import ImageWriter
 
 # ----- VUES POUR LES PERSONNELS -----
 
-class PersonnelListView(ListView):
+class PersonnelListView(LoginRequiredMixin, ListView):
     model = PersonnelNavigant
     template_name = 'expertise/personnel_list.html'
     context_object_name = 'personnels'
@@ -434,7 +441,7 @@ class PersonnelListView(ListView):
         return queryset
 
 
-class PersonnelDetailView(DetailView):
+class PersonnelDetailView(LoginRequiredMixin, DetailView):
     model = PersonnelNavigant
     template_name = 'expertise/personnel_detail.html'
     context_object_name = 'personnel'
@@ -447,7 +454,7 @@ class PersonnelDetailView(DetailView):
         return context
 
 
-class PersonnelCreateView(CreateView):
+class PersonnelCreateView(LoginRequiredMixin, CreateView):
     model = PersonnelNavigant
     fields = ['dn', 'nom', 'prenom', 'date_de_naissance', 'sexe', 'statut_pn', 'compagnie']
     template_name = 'expertise/personnel_form.html'
@@ -690,9 +697,11 @@ def telecharger_facture_medecin(request, bordereau_no, medecin_id):
     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     para = doc.add_heading('Dr. Christian Hellec', level=1)
     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-    para = doc.add_heading('BP 295 - Papeete - Tahiti', level=2)
+    para = doc.add_heading('BP 380697 - 98718 Punaauia - Tahiti', level=2)
     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     para = doc.add_heading('Polynésie Française', level=2)
+    para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    para = doc.add_heading('mel : cmpnpf@gmail.com | Tel : +689.87.77.05.18 | Tel : +689.87.71.50.90', level=2)
     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     para = doc.add_heading('--------------------', level=2)
     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER

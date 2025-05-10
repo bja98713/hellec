@@ -88,18 +88,18 @@
   <div class="header">
     <h1>Centre Médical du Personnel Naviguant de Polynésie française</h1>
     <h1>Dr. Christian Hellec</h1 >
-    <h2>BP 1946 | F-98713 Papeete</h2>
+    <h2>BP 380697 | F-98718 Punaauia</h2>
     <h2>Polynésie Française</h2>
   </div>
-  
+
   <h3>Liste des Personnels Navigants</h3>
-  
+
   <!-- Formulaire de recherche -->
   <form method="get" class="search-form">
     <input type="text" name="q" placeholder="Rechercher par nom, prénom ou DN" value="{{ request.GET.q }}">
     <button type="submit">Rechercher</button>
   </form>
-  
+
   <!-- Tableau de la liste des personnels -->
   <table>
     <thead>
@@ -131,7 +131,7 @@
       {% endfor %}
     </tbody>
   </table>
-  
+
   <p style="text-align: center;">
     <a href="{% url 'personnel_add' %}">Ajouter un nouveau personnel</a>
   </p>
