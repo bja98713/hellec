@@ -1,2 +1,25 @@
 /env
 Archive.zip
+
+# Environnement virtuel
+venv/
+__pycache__/
+*.pyc
+
+# Paramètres locaux Django
+db.sqlite3
+db.sqlite3.copie
+.env
+settings_local.py
+
+# Fichiers de logs
+*.log
+
+# Clés secrètes
+*.pem
+*.crt
+*.key
+
+# Static & media (si générés)
+staticfiles/
+media/

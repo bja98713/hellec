@@ -69,6 +69,7 @@
     th {
       background-color: #007bff;
       color: #fff;
+      cursor: pointer; /* Indique que la colonne est triable */
     }
     tr:nth-child(even) {
       background-color: #f2f2f2;
@@ -86,8 +87,8 @@
 <body>
   <!-- En-tête principal -->
   <div class="header">
-    <h1>Centre Médical du Personnel Naviguant de Polynésie française</h1>
-    <h1>Dr. Christian Hellec</h1 >
+    <h1>Centre Médical du Personnel Navigant de Polynésie française</h1>
+    <h1>Dr. Christian Hellec</h1>
     <h2>BP 380697 | F-98718 Punaauia</h2>
     <h2>Polynésie Française</h2>
   </div>
@@ -101,7 +102,7 @@
   </form>
 
   <!-- Tableau de la liste des personnels -->
-  <table>
+  <table id="personnel-table">
     <thead>
       <tr>
         <th>DN</th>
@@ -148,105 +149,34 @@
     <a href="{% url 'logout' %}">Se déconnecter</a>
   </p>
 
-<!-- 🌴 POP-UP MÉTÉO TROPICALE -->
-<style>
-  #weather-alert {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e'); /* fond tropical */
-    background-size: cover;
-    color: black; /* ✅ couleur du texte */
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    z-index: 1000;
-    width: 300px;
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-  }
-</style>
+  <!-- Script pour le tri des colonnes -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const table = document.getElementById('personnel-table');
+      const headers = table.querySelectorAll('th');
+      const tbody = table.querySelector('tbody');
+      const getCellValue = (row, index) => row.children[index].innerText || row.children[index].textContent;
+      const comparer = (index, asc) => (a, b) => {
+        const v1 = getCellValue(a, index);
+        const v2 = getCellValue(b, index);
+        const num1 = parseFloat(v1.replace(/[^0-9\-\.]/g, ''));
+        const num2 = parseFloat(v2.replace(/[^0-9\-\.]/g, ''));
+        if (!isNaN(num1) && !isNaN(num2)) {
+          return asc ? num1 - num2 : num2 - num1;
+        }
+        return asc ? v1.toString().localeCompare(v2) : v2.toString().localeCompare(v1);
+      };
 
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const city = "Papeete,PF";
-    const apiKey = "c1ffec6c4766b88a3e0df188a354923c"; // ← remplace par ta vraie clé
-    const alertBox = document.getElementById("weather-alert");
-    const contentBox = document.getElementById("weather-content");
-    const closeBtn = document.getElementById("close-weather");
-
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=fr&appid=${apiKey}`)
-        .then(response => response.json())
-        .then(data => {
-            const description = data.weather[0].description;
-            const temp = Math.round(data.main.temp);
-            const windSpeed = data.wind.speed;
-            const windDeg = data.wind.deg;
-
-            const directions = ["Nord", "Nord-Est", "Est", "Sud-Est", "Sud", "Sud-Ouest", "Ouest", "Nord-Ouest"];
-            const directionText = directions[Math.round(windDeg / 45) % 8];
-
-            contentBox.innerHTML = `
-                👋 Bonjour Christian !<br>
-                🌡️ <strong>${temp}°C</strong> - ${description}<br>
-                💨 <strong>Vent : ${windSpeed} m/s</strong> (${directionText})
-            `;
-
-            alertBox.style.display = "block";
-
-            // Disparition après 10 secondes
-            setTimeout(() => {
-                alertBox.style.opacity = 1;
-                const fadeOut = setInterval(() => {
-                    if (alertBox.style.opacity > 0) {
-                        alertBox.style.opacity -= 0.05;
-                    } else {
-                        clearInterval(fadeOut);
-                        alertBox.style.display = "none";
-                    }
-                }, 100);
-            }, 10000);
-        })
-        .catch(error => {
-            contentBox.innerHTML = "❌ Impossible de récupérer la météo.";
-            alertBox.style.display = "block";
+      headers.forEach((header, index) => {
+        let asc = true;
+        header.addEventListener('click', () => {
+          const rows = Array.from(tbody.querySelectorAll('tr'));
+          rows.sort(comparer(index, asc));
+          rows.forEach(row => tbody.appendChild(row));
+          asc = !asc;
         });
-
-    closeBtn.addEventListener("click", () => {
-        alertBox.style.display = "none";
-    });
-});
-</script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const city = "Papeete,PF";
-    const apiKey = "c1ffec6c4766b88a3e0df188a354923c";  // Remplace par ta vraie clé API
-
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=fr&appid=${apiKey}`)
-      .then(response => response.json())
-      .then(data => {
-        const weatherDescription = data.weather[0].description;
-        const temperature = data.main.temp;
-        const windSpeed = data.wind.speed;
-        const windDirection = data.wind.deg;
-
-        const weatherMessage = `Salut Christian, \n 🌴 Météo à Papeete :
-        ${weatherDescription}, ${temperature}°C
-        💨 Vent : ${windSpeed} m/s, ${windDirection}°`;
-
-        const div = document.createElement("div");
-        div.id = "weather-alert";
-        div.textContent = weatherMessage;
-        document.body.appendChild(div);
-
-        // Disparition au bout de 10 secondes
-        setTimeout(() => {
-          div.remove();
-        }, 10000);
       });
-  });
-</script>
+    });
+  </script>
 </body>
 </html>

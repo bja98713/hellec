@@ -27,7 +27,7 @@ LOGOUT_REDIRECT_URL = '/acceuil/'
 
 SECRET_KEY = 'django-insecure-<your-secret-key>'
 DEBUG = True
-ALLOWED_HOSTS = ['www.cmpnpf.com']
+ALLOWED_HOSTS = ['www.cmpnpf.com','127.0.0.1']
 
 # Application definition
 
@@ -105,7 +105,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = str(BASE_DIR / 'staticfiles')  # ✅ Correction ici
-STATICFILES_DIRS = [str(BASE_DIR / "static")]  # ✅ Optionnel si tu as un répertoire 'static'
+#STATICFILES_DIRS = [str(BASE_DIR / "static")]  # ✅ Optionnel si tu as un répertoire 'static'
 
 # Media files
 MEDIA_URL = '/media/'
